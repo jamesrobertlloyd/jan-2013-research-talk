@@ -1,0 +1,264 @@
+\input{header_beamer}
+
+\usecolortheme{default}
+\xdefinecolor{Black}{rgb}{0,0,0}
+\xdefinecolor{White}{rgb}{1,1,1}
+\xdefinecolor{DarkBlue}{rgb}{0,0,.7}
+\xdefinecolor{DarkRed}{rgb}{.7,0,0}
+\xdefinecolor{Red}{rgb}{.85,0,0}
+\xdefinecolor{DarkGreen}{rgb}{0,.7,0}
+\xdefinecolor{DarkMagenta}{rgb}{.6,0,.6}
+\def\Black{\textcolor{Black}}
+\def\White{\textcolor{White}}
+\def\Blue{\textcolor{DarkBlue}}
+\def\Magenta{\textcolor{DarkMagenta}}
+\def\Red{\textcolor{Red}}
+\def\Green{\textcolor{DarkGreen}}
+
+\usepackage{alltt}
+\usepackage{psfrag}
+\usepackage{pstool}
+
+\title[] % (optional, use only with long paper titles)
+{The Aldous--Hoover representation theorem and applications to modeling relational data}
+
+\author % (optional, use only with lots of authors)
+{James Lloyd}
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\institute[] % (optional, but mostly needed)
+{University of Cambridge}
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+
+\date % (optional)
+{January 2013}
+
+\subject{Talks}
+
+\usetikzlibrary{shapes.geometric,arrows,chains,matrix,positioning,scopes}
+ \makeatletter
+ \tikzset{join/.code=\tikzset{after node path={%
+       \ifx\tikzchainprevious\pgfutil@empty\else(\tikzchainprevious)%
+       edge[every join]#1(\tikzchaincurrent)\fi}}
+ }
+ \tikzset{>=stealth',every on chain/.append style={join},
+   every join/.style={->}
+ }
+
+\tikzstyle{mybox} = [draw=white, rectangle]
+\usepackage{ifthen}
+\usepackage{booktabs}
+
+% Custom definitions
+\def\simiid{\sim_{\mbox{\tiny iid}}}
+
+\input{commenting.tex}
+
+%% For submission, make all render blank.
+%\renewcommand{\LATER}[1]{}
+%\renewcommand{\fLATER}[1]{}
+%\renewcommand{\TBD}[1]{}
+%\renewcommand{\fTBD}[1]{}
+%\renewcommand{\PROBLEM}[1]{}
+%\renewcommand{\fPROBLEM}[1]{}
+%\renewcommand{\NA}[1]{#1}  %% Note, NA's pass through!
+
+\begin{document}
+
+\small
+%% { 
+%%   \setbeamertemplate{footline}{\empty}
+%%   \begin{frame}
+%%     \titlepage
+%%   \end{frame}
+%% }
+\renewcommand{\inserttotalframenumber}{11}
+
+\input{defs}
+
+\begin{frame}
+  \begin{block}{}
+    \titlepage
+  \end{block}
+  %\begin{center}
+    %{\bf Thanks to}\\
+    %Some people?
+  %\end{center}
+\end{frame}
+
+\begin{frame}{Agenda}
+  \begin{block}{}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Relational data: definition}
+  \begin{block}{}
+    Anything measured at pairs or higher of objects.
+    
+    Anything can be construed into this form, but exchangeability usually tells us if something is sensible
+    
+    Show a picture of a network
+    
+    Mention that in full generality we could be talking about a database
+  \end{block}
+\end{frame}
+
+\begin{frame}{Exchangeability: a weak assumption}
+  \begin{block}{}
+    Define in mathematics for non relational data
+    Explain in words - give an example
+  \end{block}
+\end{frame}
+
+\begin{frame}{Exchangeability for relational data}
+  \begin{block}{}
+    Picture of equivalent graphs
+  \end{block}
+\end{frame}
+
+\begin{frame}{Exchangeable arrays}
+  \begin{block}{}
+    We need a representation
+  
+    Pictures of corresponding arrays
+    
+    Graphs will be working example - but ideas applicable elsewhere
+  \end{block}
+\end{frame}
+
+\begin{frame}{Exchangeable arrays}
+  \begin{block}{}
+    We need a representation
+  
+    Pictures of corresponding arrays
+    
+    Graphs will be working example - but ideas applicable elsewhere
+  \end{block}
+\end{frame}
+
+\begin{frame}{Aldous--Hoover theorem}
+  \begin{block}{}
+  \end{block}
+\end{frame}
+
+\begin{frame}{An approximation}
+  \begin{block}{}
+    State result of Kallenberg
+  \end{block}
+\end{frame}
+
+\begin{frame}{An approximation: in pictures}
+  \begin{block}{}
+    Show picture of generating a graph
+  \end{block}
+\end{frame}
+
+\begin{frame}{Generative model prototype}
+  \begin{block}{}
+    Write down generic model
+    
+    Mention how this splits into graph level, node level, edge level
+  \end{block}
+\end{frame}
+
+\begin{frame}{Many models fit this pattern}
+  \begin{block}{}
+    Show version that approxes either $W$ or $\Theta$
+  \end{block}
+\end{frame}
+
+\begin{frame}{Correspondance between GPs and bilinear}
+  \begin{block}{}
+    State 
+  \end{block}
+\end{frame}
+
+\begin{frame}{Potential future research - 1-array -> 2-array}
+  \begin{block}{}
+    \eg Mixture of basis functions (motivate via Mondrian)
+    
+    Relational $k$-means
+    
+    Must be something interesting
+  \end{block}
+\end{frame}
+
+\begin{frame}{Potential future research - 2-array -> 1-array}
+  \begin{block}{}
+    \eg ILA is an interesting new prior on latent variables
+  \end{block}
+\end{frame}
+
+\begin{frame}{Potential future research - 1/2-array -> $d$-array}
+  \begin{block}{}
+    Still of interest but more about computational constraints
+  \end{block}
+\end{frame}
+
+\begin{frame}{Collections of arrays}
+  \begin{block}{}
+    What about collections of arrays
+    
+    Give simple example of feature data
+    
+    But what if got a social network as well
+  \end{block}
+\end{frame}
+
+\begin{frame}{Extension of theorem to feature data}
+  \begin{block}{}
+    Statement
+    
+    Proof optional
+  \end{block}
+\end{frame}
+
+\begin{frame}{Extension of theorem to feature data and social network}
+  \begin{block}{}
+    Just state
+  \end{block}
+\end{frame}
+
+\begin{frame}{Open questions}
+  \begin{block}{}
+    Will dropping the dependence between functions be ok?
+    
+    How do we design models that will not compromise when modeling unrelated arrays
+  \end{block}
+\end{frame}
+
+\begin{frame}{Bleeding edge thoughts on balancing}
+  \begin{block}{}
+    Crucial thing is increase in complexity in one array does not pay a penalty based on other arrays and state of model
+  \end{block}
+\end{frame}
+
+\begin{frame}{Numerical results}
+  \begin{block}{}
+    Crucial thing is increase in complexity in one array does not pay a penalty based on other arrays and state of model
+  \end{block}
+\end{frame}
+
+\begin{frame}{Appendix: RFM numerical results}
+  \begin{block}{}
+    Table
+  \end{block}
+\end{frame}
+
+\begin{frame}{Appendix: RFM posterior}
+  \begin{block}{}
+    Pictures
+  \end{block}
+\end{frame}
+
+\begin{frame}{Appendix: RFM inference}
+  \begin{block}{}
+    Words and maths
+  \end{block}
+\end{frame}
+
+\end{document}
+
+
