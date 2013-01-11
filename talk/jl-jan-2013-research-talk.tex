@@ -1,0 +1,532 @@
+\input{../include/header_beamer}
+
+\usecolortheme{default}
+\xdefinecolor{Black}{rgb}{0,0,0}
+\xdefinecolor{White}{rgb}{1,1,1}
+\xdefinecolor{DarkBlue}{rgb}{0,0,.7}
+\xdefinecolor{DarkRed}{rgb}{.7,0,0}
+\xdefinecolor{Red}{rgb}{.85,0,0}
+\xdefinecolor{DarkGreen}{rgb}{0,.7,0}
+\xdefinecolor{DarkMagenta}{rgb}{.6,0,.6}
+\def\Black{\textcolor{Black}}
+\def\White{\textcolor{White}}
+\def\Blue{\textcolor{DarkBlue}}
+\def\Magenta{\textcolor{DarkMagenta}}
+\def\Red{\textcolor{Red}}
+\def\Green{\textcolor{DarkGreen}}
+\definecolor{camlightblue}{rgb}{0.601 , 0.8, 1}
+
+\usepackage{alltt}
+\usepackage{psfrag}
+\usepackage{pstool}
+
+\def\newarrow{\mbox{\begin{tikzpicture}
+             \useasboundingbox{(-3pt,-4.5pt) rectangle (19pt,1pt)};
+             \draw[->] (0,-0.07)--(17pt,-0.07);\end{tikzpicture}}}
+
+\title[] % (optional, use only with long paper titles)
+{The Aldous--Hoover representation theorem and applications to modeling relational data}
+
+\author % (optional, use only with lots of authors)
+{James Lloyd}
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\institute[] % (optional, but mostly needed)
+{University of Cambridge}
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+
+\date % (optional)
+{January 2013}
+
+\subject{Talks}
+
+\usetikzlibrary{shapes.geometric,arrows,chains,matrix,positioning,scopes}
+ \makeatletter
+ \tikzset{join/.code=\tikzset{after node path={%
+       \ifx\tikzchainprevious\pgfutil@empty\else(\tikzchainprevious)%
+       edge[every join]#1(\tikzchaincurrent)\fi}}
+ }
+ \tikzset{>=stealth',every on chain/.append style={join},
+   every join/.style={->}
+ }
+
+\tikzstyle{mybox} = [draw=white, rectangle]
+\usepackage{ifthen}
+\usepackage{booktabs}
+
+% Custom definitions
+\def\simiid{\sim_{\mbox{\tiny iid}}}
+
+\input{../include/commenting.tex}
+
+%% For submission, make all render blank.
+%\renewcommand{\LATER}[1]{}
+%\renewcommand{\fLATER}[1]{}
+%\renewcommand{\TBD}[1]{}
+%\renewcommand{\fTBD}[1]{}
+%\renewcommand{\PROBLEM}[1]{}
+%\renewcommand{\fPROBLEM}[1]{}
+%\renewcommand{\NA}[1]{#1}  %% Note, NA's pass through!
+
+%%%%
+% Paper specific stuff
+%%%%
+
+\newtheorem{thm}{Theorem}%[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{cor}[thm]{Corollary}
+
+\newtheorem*{theorem*}{Theorem}
+
+\theoremstyle{definition}
+\newtheorem*{definition*}{Definition}
+%\newtheorem{definition}[thm]{Definition}%[section]
+\newtheorem{conj}{Conjecture}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{rem}[thm]{Remark}
+
+\theoremstyle{remark}
+%\newtheorem{rem}{Remark}
+%\newtheorem{note}{Note}
+%\newtheorem{case}{Case}
+
+\newcommand{\eqd}{\overset{\,_{\!d}}{=}}
+\newcommand{\defn}[1]{\emph{#1}}
+
+\newcommand{\Law}{\mathcal{L}}
+
+\def\given{\,|\,}
+
+\def\SGinf{\mathbb{S}_{\infty}}
+
+\newcommand{\NonNegInts}{\mathbb{Z}_+}
+\newcommand{\Nats}{\mathbb{N}}
+\newcommand{\Rationals}{\mathbb{Q}}
+\newcommand{\Reals}{\mathbb{R}}
+
+\newcommand{\as}{\textrm{a.s.}}
+
+\def\[#1\]{\begin{align}#1\end{align}}
+\newcommand{\defas}{:=}
+
+\newcommand{\Normal}{\mathcal{N}}
+\newcommand{\dist}{\ \sim\ }
+
+\newcommand{\kernel}{\kappa}
+\newcommand{\kernelmatrix}{K}
+\newcommand{\scalefactor}{s}
+\newcommand{\lengthscale}{\ell}
+\newcommand{\targets}{T}
+\newcommand{\noise}{\sigma_\targets}
+\newcommand{\pseudopoints}{\eta}
+\newcommand{\inputpoints}{\xi}
+\newcommand{\covhyppar}{\psi}
+\newcommand{\logistic}{\phi}
+
+\newcommand{\CompOrder}{\mathcal{O}}
+\def\graphspace{\mathbf{G}}
+\def\Uniform{\mbox{\rm Uniform}}
+\def\Bernoulli{\mbox{\rm Bernoulli}}
+\def\ie{i.e.,\ }
+\def\eg{e.g.,\ }
+\def\iid{i.i.d.\ }
+\def\simiid{\sim_{\mbox{\tiny iid}}}
+\def\simind{\sim_{\mbox{\tiny ind}}}
+\def\eqdist{\stackrel{\mbox{\tiny d}}{=}}
+\def\ahfunction{\theta}       
+\def\AHfunction{\Theta}           % A-H random function
+\def\AHvar{U}                     % A-H uniform variables
+\def\AHvaralt{V}                  % A-H uniform variables - for bipartite data
+\def\larray{W}                    % latent array sampled with A-H
+%\def\latentspace{\mathbf{W}}      % range of entries
+\def\latentspace{\mathcal{W}}      % range of entries
+\def\darray{X}                    % data array
+%\def\dataspace{\mathbf{X}}        % sample space
+\def\dataspace{\mathcal{X}}        % sample space
+\def\cfspace{\mathbf{C}}          % space of continuous functions
+%\def\GP{\mbox{\mathcal{GP}}}
+\def\GP{\mathcal{GP}}
+\def\likelihood{P}
+\def\CovData{C}
+\def\CovDataAlt{D}
+
+\begin{document}
+
+\small
+%% { 
+%%   \setbeamertemplate{footline}{\empty}
+%%   \begin{frame}
+%%     \titlepage
+%%   \end{frame}
+%% }
+\renewcommand{\inserttotalframenumber}{11}
+
+%\input{../include/defs}
+
+\begin{frame}
+  \begin{block}{}
+    \titlepage
+  \end{block}
+  \begin{center}
+    {\bf  Collaborators}\\
+    Daniel M. Roy (Cambridge)\\
+    Peter Orbanz (Columbia)\\
+    Zoubin Ghahramani (Cambridge)
+  \end{center}
+\end{frame}
+
+\begin{frame}{Relational data: definition}
+  \begin{block}{}
+    Anything measured at more than one type of `object'
+  \end{block}
+  \begin{block}{}
+  	\center
+	\vspace{-1\baselineskip}
+    \input{../include/interactome_adj}
+  \end{block}
+  \begin{block}{}
+    In full generality, anything that can be stored in a relational database
+  \end{block}
+\end{frame}
+
+\begin{frame}{How can we model such data?}
+  \begin{block}{}
+    \begin{itemize}
+      \item Interested in generative modeling of such data for \eg
+      \begin{itemize}
+        \item Discovery of latent structure \eg groups of proteins with similar functions in protein-protein interactomes
+        \item Prediction of missing data \eg movie recommendation, friend suggestions
+      \end{itemize}
+      \vspace{\baselineskip}
+      \item Relational data typically encoded in arrays. How do reasonable assumptions about the data translate to the array representation
+      \vspace{\baselineskip}
+      \item We make a weak assumption and demonstrate the implied structure for arrays
+      \begin{itemize}
+        \item Implied structure allows for classification of many models
+        \item Also inspires a simple Bayesian nonparametric model with good empirical performance
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Exchangeability for relational data}
+  \begin{block}{}
+  \center
+  \input{../include/exchangeable_just_graphs}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Exchangeability for corresponding arrays}
+  \begin{block}{}
+  \center
+  \input{../include/exchangeable}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Exchangeability can be characterised}
+\begin{block}{}
+  \begin{definition*}
+  An array $\darray=(\darray_{ij})_{i,j\in\Nats}$ is called an \emph{exchangeable array} if 
+  \begin{equation*}
+    \label{eq:jointly:ex}
+    (\darray_{ij})\eqdist(\darray_{\pi(i)\pi(j)}) \qquad\text{ for every }\pi\in\SGinf\;.
+  \end{equation*}
+\end{definition*}
+\end{block}
+
+%\vspace{1\baselineskip}
+\begin{block}{}
+\begin{theorem*}[Aldous, Hoover]
+  \label{theorem:ah}
+  A random 2-array $(\darray_{ij})$ is exchangeable if and only if there is a random (measurable) function ${F:[0,1]^3\rightarrow\dataspace}$ such that 
+  \begin{equation*}
+    \label{eq:ah}
+    (\darray_{ij})\eqdist (F(\AHvar_i,\AHvar_j,\AHvar_{ij})).
+  \end{equation*}
+for every collection  $(\AHvar_i)_{i\in\Nats}$ and $(\AHvar_{ij})_{i\le j\in\Nats}$ of \iid $\Uniform[0,1]$ random variables, where $\AHvar_{ji} = \AHvar_{ij}$ for $j < i \in \Nats$.
+\end{theorem*}
+\end{block}
+\end{frame}
+
+\begin{frame}{An arbitrarily good approximation}
+  \begin{block}{This representation can be simplified}
+Call an array $(\darray_{ij})$, \emph{simple} if it admits a representation
+\[
+(\darray_{ij}) \eqd (\Theta(\AHvar_{i},\AHvar_{j})) \nonumber
+\]
+Let $\Law(Y)$ be the law (distribution) of a random variable $Y$ and \\define $\chi_m X \defas (X_{ij}; \ i,j \le m )$.
+\end{block}
+\begin{block}{}
+\begin{thm}[{Kallenberg}]
+\label{theorem:simple}
+Let $\darray$ be a $d$-dimensional exchangeable array in a Borel space $\dataspace$.  Then there exist some simple exchangeable arrays $X_1,X_2,\dotsc$ such that $\Law(\chi_m X_n) \textrm{ and } \Law(\chi_m X)$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
+\end{thm}
+  \end{block}
+%  \begin{block}{\ldots allowing the following simplification}
+%    We can produce arbitrarily good approximations to exchangeable arrays with functions of the form
+%    \[
+%      (\darray_{ij}) = (F(\AHvar_i,\AHvar_j)) \nonumber
+%    \]
+%  \end{block}
+\end{frame}
+
+\begin{frame}{This inspires a Bayesian nonparametric model}
+\begin{block}{}
+We decompose the function $F$ into two functions 
+${\AHfunction:[0,1]^2\rightarrow\latentspace}$ 
+and ${H:[0,1]\times\latentspace\rightarrow\dataspace}$ for a suitable space $\latentspace$\/, such that
+\begin{equation*}
+  \label{eq:decomposition}
+  (\darray_{ij}) \eqd (F(\AHvar_i,\AHvar_j,\AHvar_{ij}))=(H(\AHvar_{ij},\AHfunction(\AHvar_i,\AHvar_j)))\;.
+\end{equation*}
+\end{block}
+\begin{block}{}
+Inspiring the following generative model
+\begin{equation}
+  \begin{split}
+    \AHfunction\; &\sim\; \GP(0,\kernel) \\
+    \AHvar_{1},\AHvar_{2},\ldots\; &\simiid\; \Uniform[0,1] \nonumber \\
+    \darray_{ij}\,|W_{ij}\; &\sim\; \likelihood[\,.\,|W_{ij}]
+  \end{split}
+\end{equation}
+
+\begin{center}
+where $W_{ij}=\AHfunction(\AHvar_i,\AHvar_j)$.
+\end{center}
+\end{block}
+\end{frame}
+
+\begin{frame}{The model  in pictures}
+ \begin{block}{}
+   \input{../include/fig_graphon.tex}
+ \end{block}
+\end{frame}
+
+\begin{frame}{Many models fit this pattern}
+  \begin{block}{}
+\begin{center}
+  \begin{tabular}{lccl} 
+%    \toprule
+    \multicolumn{4}{c}{Graph data}\\
+    \midrule
+    %\addlinespace[2pt]
+    %\textcolor{red}{Random function model} 
+    Random function model & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel)$\\
+    Latent class & $\larray_{ij}$ & $=$ & $\Lambda_{\AHvar_i\AHvar_j}\,\textrm{where} \,\AHvar_i \in \{1,\ldots,K\}$\\
+    IRM & $\larray_{ij}$ & $=$ & $\Lambda_{\AHvar_i\AHvar_j}\,\textrm{where} \,\AHvar_i \in \{1,\ldots,\infty\}$\\
+    Latent distance & $\larray_{ij}$ & $=$ & $-|\AHvar_i - \AHvar_j|$\\
+    Eigenmodel &$\larray_{ij}$ & $=$ & $\AHvar_i'\Lambda \AHvar_j$\\
+    LFRM & $\larray_{ij}$ & $=$ & $\AHvar_i'\Lambda \AHvar_j\,\textrm{where} \,\AHvar_i \in \{0,1\}^\infty$\\
+    ILA & $\larray_{ij}$ & $=$ & $\sum_d \mathbb{I}_{U_{id}}\mathbb{I}_{U_{jd}}\Lambda^{(d)}_{U_{id}U_{jd}}\,\textrm{where} \,\AHvar_i \in \{0,\ldots,\infty\}^\infty$\\
+    SMGB & $\AHfunction$ & $\dist$ & $\GP\,(0, \kernel_1 \otimes \kernel_2)$ \\
+    %\midrule
+    \addlinespace[4pt]
+    \multicolumn{4}{c}{Real-valued array data}\\
+    \midrule
+    %\textcolor{red}{Random function model} 
+    Random function model & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel)$\\
+    Mondrian process based & $\AHfunction$ & = & piece-wise constant random function\\
+    PMF & $\larray_{ij}$ & $=$ & $\AHvar_i'V_j$\\
+    GPLVM & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel \otimes \delta)$\\
+    %Linear relational GP~\cite{Yu2008} & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel_1 \otimes \kernel_2)\,\textrm{where} \,\kernel_i\,\textrm{is linear} $\\
+%\bottomrule
+\end{tabular}
+\end{center}
+  \end{block}
+\end{frame}
+
+\begin{frame}{A correspondence result}
+  \begin{block}{}
+\begin{prop}
+\label{prop:matrixfactorisation}
+A matrix factorization model defined as
+\begin{equation*}
+W_{ij} = \AHvar_i'\Lambda\AHvaralt_j \quad \quad \Lambda_{ij} \simiid \Normal (0, 1)
+\end{equation*}
+is equivalent to
+\begin{equation*}
+W_{ij} = \AHfunction\,(\AHvar_i, \AHvaralt_j) \quad \quad \AHfunction \sim \GP\,(0, L_\AHvar \otimes L_\AHvaralt)
+\end{equation*}
+\vspace{\baselineskip}
+
+where $L_U(\AHvar_{i_1}, \AHvar_{i_2}) = \AHvar_{i_1}'\AHvar_{i_2}$ and similarly for $L_V$.
+\end{prop}
+  \end{block}
+\end{frame}
+
+\begin{frame}{A simpler overview of model space}
+  \begin{block}{}
+  \centering
+  \begin{tabular}{l|ccc}%c} 
+%    \toprule
+    & $W_{ij}$ & $\kernel$ & $U_i, V_j \sim \, .$ \\% & $\dataspace$\\ 
+    %\multicolumn{4}{c}{Graph data}\\
+    \midrule
+    %\addlinespace[2pt]
+    %\textcolor{red}{Random function model} 
+    Random function model & $\phi(U_i, V_j)'\Lambda$ & $\kernel_{U\times V}$ & Gaussian\\% & All\\
+    SMGB, InfTucker & $\phi(\AHvar_i)'\Lambda\phi(\AHvaralt_j)$ & $\kernel_U \otimes \kernel_V$ & Laplace \\% & $\{0,1\},\, \Reals$\\
+    GPLVM & $\phi(\AHvar_i)'\Lambda$ & $\kernel_\AHvar \otimes \delta_V$ & Gaussian \\% & All\\
+    Eigenmodel & $\AHvar_i'\Lambda \AHvaralt_j$ & $L_U \otimes L_V$ & Gaussian \\% & All\\
+    Linear relational GP & $\AHvar_i'\Lambda \AHvaralt_j$ & $L_U \otimes L_V$ & Gaussian \\% & $\{0,1\}$\\
+    PCA, PMF & $\AHvar_i'\Lambda$ & $L_U \otimes \delta_V$ & Gaussian \\% & $\Reals$\\
+    Latent distance & $-|\AHvar_i - \AHvar_j|$ & 0 & Gaussian \\% & $\{0,1\}$\\
+    Mondrian process based & Decision tree & * & Uniform \\% & All\\
+    \midrule
+    Latent class & $\Lambda_{\AHvar_i\AHvar_j}$ & $\delta_{U\times U}$ & Multinomial \\% & $\{0,1\}$\\
+    IRM &$\Lambda_{\AHvar_i\AHvaralt_j}$ & $\delta_{U\times V}$ & CRP \\% & $\{0,1\}$\\
+    IHRM  &$\Lambda_{\AHvar_i\AHvaralt_j}$ & $\delta_{U\times V}$ & CRP \\% & $\Reals$\\
+    BMF  & $\AHvar_i'\Lambda \AHvaralt_j$ & $L_U \otimes L_V$ & IBP \\% & $\Reals$\\
+    LFRM & $\AHvar_i'\Lambda \AHvar_j$ & $L_U \otimes L_U$ & IBP \\% & $\{0,1\}$\\
+    ILA & $\sum_d \mathbb{I}_{U_{id}}\mathbb{I}_{U_{jd}}\Lambda^{(d)}_{U_{id}U_{jd}}$ & * & CRP $+$ IBP \\% &$\{0,1\}$ \\
+    %\midrule
+    %\addlinespace[4pt]
+    %\multicolumn{4}{c}{Real-valued matrix data}\\
+    %\midrule
+    %\textcolor{red}{Random function model} 
+%\bottomrule
+\end{tabular}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Posterior}
+  \begin{block}{}
+  \begin{center}
+  \input{../include/fig_interactome.tex}
+\end{center}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Ongoing research / ideas}
+  \begin{block}{}
+    \begin{itemize}
+      \item Modeling multiple arrays \eg joint modelling of social network and `like' data
+      \begin{itemize}
+        \item Corollaries of Aldous--Hoover suggest representations for such data
+        \item Many unanswered questions about generating good models
+      \end{itemize}
+      \vspace{\baselineskip}
+      \item Trying new priors on functions
+      \begin{itemize}
+        \item Many priors on functions for sequential data that could have utility for relational data
+        \item \eg Analogous versions of $k$-means, mixture of Gaussians?
+      \end{itemize}
+      \vspace{\baselineskip}
+      \item Trying new priors on latent variables
+      \begin{itemize}
+        \item CRP $+$ IBP prior in ILA could be more broadly applicable
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Extensions: Array with `feature' data}
+  \begin{block}{}
+\begin{cor}
+  \label{theorem:ahcov}
+  Let $(\darray_{ij})_{i,j\in\Nats}$ and $(\CovData_i)_{i\in\Nats}$ be random variables in $\dataspace$ and $\dataspace'$ respectively.  Then the following are equivalent:
+\begin{enumerate}  
+\item[i.] $(\darray_{ij}, \CovData_i)\eqdist(\darray_{\pi(i)\pi(j)}, \CovData_{\pi(i)}) \,\text{ for every }\pi\in\SGinf$. 
+\item[ii.] There are random (measurable) functions $F:[0,1]^3\rightarrow\dataspace$ and $G:[0,1]\rightarrow\dataspace'$ such that 
+   \begin{equation}
+    \label{eq:ah:cov}
+    (\darray_{ij}, \CovData_i)\eqdist (F(\AHvar_i,\AHvar_j,\AHvar_{ij}), G(\AHvar_i)),
+  \end{equation}
+for every collection $(\AHvar_i)_{i\in\Nats}$ and $(\AHvar_{ij})_{i\le j\in\Nats}$ of \iid $\Uniform[0,1]$ random variables, where $\AHvar_{ji} = \AHvar_{ij}$ for $j < i \in \Nats$.
+\end{enumerate}
+\end{cor}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Extensions: Multiple arrays}
+  \begin{block}{}
+Consider rating data $(\darray_{ij})$ with users $i$ and movies $j$, with side information in the form of covariates for both users, $\CovData_i$, and movies, $\CovDataAlt_j$, and a social network $(S_{ik})$ over users $i,k$.
+\end{block}
+  \begin{block}{}
+\begin{cor}
+The following are equivalent
+\begin{enumerate}
+\item[i.] $
+(\darray_{ij}, \CovData_i, \CovDataAlt_j, S_{ik}) \eqdist
+(\darray_{\pi(i)\pi'(j)}, \CovData_{\pi(i)}, \CovDataAlt_{\pi'(j)}, S_{\pi(i)\pi(k)})$ 
+for every $\pi,\pi' \in \SGinf$.
+\item[ii.] There exist random functions $F,G,H,I$ such that
+\[
+(\darray_{ij}, \CovData_i, \CovDataAlt_j, S_{ik}) \eqdist (F(\AHvar_i,\AHvaralt_j,W_{ij}), G(\AHvar_i), H(\AHvaralt_j), I(\AHvar_i,\AHvar_k,\AHvar_{ik}))
+\]
+for every collection $(\AHvar_i)_{i\in\Nats}, (\AHvaralt_j)_{j\in\Nats}, (W_{ij})_{i, j\in\Nats}$ and $(\AHvar_{ik})_{i\le k\in\Nats}$ of \iid $\Uniform[0,1]$ random variables, where $\AHvar_{ki} = \AHvar_{ik}$ for $k < i \in \Nats$.
+\end{enumerate}
+\end{cor}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Multiple arrays: preliminary numerical results}
+ \begin{block}{Data}
+   \begin{itemize}
+   \item A friend of friends network collected from last.FM ($S_{ik}$)
+   \item A user $\times$ genre matrix: $X_{ij} = 1$ iff user $i$ has listened to genre $j$
+   \end{itemize}
+ \end{block}
+ \begin{block}{Cold start task}
+   \begin{itemize}
+     \item Want to predict entire rows of $X_{ij}$ \ie recommendations for new users
+     \item Consider jointly modelling the array
+   \end{itemize}
+ \end{block}
+ \begin{block}{Preliminary numerical results promising}
+   Insert a table and some comparisons
+ \end{block}
+\end{frame}
+
+\begin{frame}{Multiple arrays: many open questions}
+  \begin{block}{}
+    \begin{itemize}
+      \item Which designs of model will effectively model multiple arrays without having to `balance' or compromise?
+      \begin{itemize}
+        \item Flat clustering models seem especially inappropriate \eg IRM
+        \item Multiple clustering models seem well suited
+        \item How does this transfer to GP case - in particular, prior on length scales
+      \end{itemize}
+      \vspace{\baselineskip}
+      \item Is generative modelling appropriate, or can we find more efficient models of conditional densities?
+      \begin{itemize}
+        \item What are appropriate representations for conditional densities?
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Potential future research - 1-array -> 2-array}
+  \begin{block}{}
+    \eg Mixture of basis functions (motivate via Mondrian)
+    
+    Relational $k$-means
+    
+    Must be something interesting
+  \end{block}
+\end{frame}
+
+\begin{frame}{Appendix: RFM numerical results}
+  \begin{block}{}
+    Table
+  \end{block}
+\end{frame}
+
+\begin{frame}{Appendix: RFM posterior}
+  \begin{block}{}
+    Pictures
+  \end{block}
+\end{frame}
+
+\begin{frame}{Appendix: RFM inference}
+  \begin{block}{}
+    Words and maths
+  \end{block}
+\end{frame}
+
+\end{document}
+
+
