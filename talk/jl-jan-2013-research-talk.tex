@@ -178,7 +178,7 @@
   \end{center}
 \end{frame}
 
-\begin{frame}{Relational data: definition}
+\begin{frame}{Relational data}
   \begin{block}{}
     Anything measured at more than one type of `object'
   \end{block}
@@ -201,9 +201,9 @@
         \item Prediction of missing data \eg movie recommendation, friend suggestions
       \end{itemize}
       \vspace{\baselineskip}
-      \item Relational data typically encoded in arrays. How do reasonable assumptions about the data translate to the array representation
+      \item Relational data typically encoded in arrays. How do reasonable assumptions about the data translate to the array representation?
       \vspace{\baselineskip}
-      \item We make a weak assumption and demonstrate the implied structure for arrays
+      \item We make a weak assumption and use a result from probability theory to describe the implied structure of arrays
       \begin{itemize}
         \item Implied structure allows for classification of many models
         \item Also inspires a simple Bayesian nonparametric model with good empirical performance
@@ -400,6 +400,14 @@ where $L_U(\AHvar_{i_1}, \AHvar_{i_2}) = \AHvar_{i_1}'\AHvar_{i_2}$ and similarl
   \end{block}
 \end{frame}
 
+\begin{frame}{Posterior}
+  \begin{block}{}
+  Show video if available
+  
+  Discuss block models, stochastic equivalence and homophily
+  \end{block}
+\end{frame}
+
 \begin{frame}{Ongoing research / ideas}
   \begin{block}{}
     \begin{itemize}
@@ -412,12 +420,12 @@ where $L_U(\AHvar_{i_1}, \AHvar_{i_2}) = \AHvar_{i_1}'\AHvar_{i_2}$ and similarl
       \item Trying new priors on functions
       \begin{itemize}
         \item Many priors on functions for sequential data that could have utility for relational data
-        \item \eg Analogous versions of $k$-means, mixture of Gaussians?
+        \item \eg Simpler basis function representation of random functions?
       \end{itemize}
       \vspace{\baselineskip}
       \item Trying new priors on latent variables
       \begin{itemize}
-        \item CRP $+$ IBP prior in ILA could be more broadly applicable
+        \item CRP $+$ IBP prior in ILA could be more broadly applicable \eg sequential data
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -433,7 +441,7 @@ where $L_U(\AHvar_{i_1}, \AHvar_{i_2}) = \AHvar_{i_1}'\AHvar_{i_2}$ and similarl
 \item[ii.] There are random (measurable) functions $F:[0,1]^3\rightarrow\dataspace$ and $G:[0,1]\rightarrow\dataspace'$ such that 
    \begin{equation}
     \label{eq:ah:cov}
-    (\darray_{ij}, \CovData_i)\eqdist (F(\AHvar_i,\AHvar_j,\AHvar_{ij}), G(\AHvar_i)),
+    (\darray_{ij}, \CovData_i)\eqdist (F(\AHvar_i,\AHvar_j,\AHvar_{ij}), G(\AHvar_i)), \nonumber
   \end{equation}
 for every collection $(\AHvar_i)_{i\in\Nats}$ and $(\AHvar_{ij})_{i\le j\in\Nats}$ of \iid $\Uniform[0,1]$ random variables, where $\AHvar_{ji} = \AHvar_{ij}$ for $j < i \in \Nats$.
 \end{enumerate}
@@ -455,7 +463,7 @@ The following are equivalent
 for every $\pi,\pi' \in \SGinf$.
 \item[ii.] There exist random functions $F,G,H,I$ such that
 \[
-(\darray_{ij}, \CovData_i, \CovDataAlt_j, S_{ik}) \eqdist (F(\AHvar_i,\AHvaralt_j,W_{ij}), G(\AHvar_i), H(\AHvaralt_j), I(\AHvar_i,\AHvar_k,\AHvar_{ik}))
+(\darray_{ij}, \CovData_i, \CovDataAlt_j, S_{ik}) \eqdist (F(\AHvar_i,\AHvaralt_j,W_{ij}), G(\AHvar_i), H(\AHvaralt_j), I(\AHvar_i,\AHvar_k,\AHvar_{ik}))\nonumber
 \]
 for every collection $(\AHvar_i)_{i\in\Nats}, (\AHvaralt_j)_{j\in\Nats}, (W_{ij})_{i, j\in\Nats}$ and $(\AHvar_{ik})_{i\le k\in\Nats}$ of \iid $\Uniform[0,1]$ random variables, where $\AHvar_{ki} = \AHvar_{ik}$ for $k < i \in \Nats$.
 \end{enumerate}
@@ -463,7 +471,7 @@ for every collection $(\AHvar_i)_{i\in\Nats}, (\AHvaralt_j)_{j\in\Nats}, (W_{ij}
   \end{block}
 \end{frame}
 
-\begin{frame}{Multiple arrays: preliminary numerical results}
+\begin{frame}{Multiple arrays: preliminary results}
  \begin{block}{Data}
    \begin{itemize}
    \item A friend of friends network collected from last.FM ($S_{ik}$)
@@ -477,54 +485,95 @@ for every collection $(\AHvar_i)_{i\in\Nats}, (\AHvaralt_j)_{j\in\Nats}, (W_{ij}
    \end{itemize}
  \end{block}
  \begin{block}{Preliminary numerical results promising}
-   Insert a table and some comparisons
+   \begin{itemize}
+     \item Jointly modelling social network raises AUC from 0.50 to 0.55
+     \item Improvement over heuristics \eg population average, average of friends, \ldots
+     \item More research required to understand significance of result
+   \end{itemize} 
  \end{block}
 \end{frame}
 
-\begin{frame}{Multiple arrays: many open questions}
+\begin{frame}{Multiple arrays: open questions}
   \begin{block}{}
     \begin{itemize}
       \item Which designs of model will effectively model multiple arrays without having to `balance' or compromise?
       \begin{itemize}
         \item Flat clustering models seem especially inappropriate \eg IRM
-        \item Multiple clustering models seem well suited
-        \item How does this transfer to GP case - in particular, prior on length scales
+        \item Multiple clustering models seem well suited \eg IBP priors
+        \item How does this transfer to GP case - in particular, prior on length scales?
+        \item Can good design principles identify an expressive yet tractable model that will provide an effective tool for cold start problems
       \end{itemize}
       \vspace{\baselineskip}
       \item Is generative modelling appropriate, or can we find more efficient models of conditional densities?
       \begin{itemize}
         \item What are appropriate representations for conditional densities?
       \end{itemize}
-    \end{itemize}
+      \end{itemize}
   \end{block}
 \end{frame}
 
-\begin{frame}{Potential future research - 1-array -> 2-array}
+\begin{frame}{Other priors on functions}
   \begin{block}{}
-    \eg Mixture of basis functions (motivate via Mondrian)
-    
-    Relational $k$-means
-    
-    Must be something interesting
+    Draw IRM, Mondrian, mixture of Gaussians
   \end{block}
 \end{frame}
 
 \begin{frame}{Appendix: RFM numerical results}
   \begin{block}{}
-    Table
-  \end{block}
-\end{frame}
-
-\begin{frame}{Appendix: RFM posterior}
-  \begin{block}{}
-    Pictures
+    \begin{center}
+    \tiny
+  \begin{tabular}{r | r r r | r r r | r r r}
+    \multicolumn{10}{c}{AUC results} \\
+    \addlinespace[2pt]
+    Data set & \multicolumn{3}{c|}{High school} & \multicolumn{3}{c|}{NIPS} & \multicolumn{3}{c}{Protein} \\
+    Latent dim. & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
+    \midrule
+    PMF                   & 0.747 & 0.792 & 0.792 & 0.729 & 0.789 & 0.820 & 0.787 & 0.810 & 0.841 \\
+    Eigenmodel            & 0.742 & 0.806 & 0.806 & 0.789 & 0.818 & 0.845 & 0.805 & 0.866 & 0.882 \\
+    GPLVM                 & 0.744 & 0.775 & 0.782 & 0.888 & 0.876 & 0.883 & 0.877 & 0.883 & 0.873 \\
+    RFM & \textbf{0.815} & \textbf{0.827} & \textbf{0.820} & \textbf{0.907} & \textbf{0.914} & \textbf{0.919} & \textbf{0.903} & \textbf{0.910} & \textbf{0.912}
+  \end{tabular}
+\end{center}
   \end{block}
 \end{frame}
 
 \begin{frame}{Appendix: RFM inference}
   \begin{block}{}
-    Words and maths
+\begin{itemize}
+\item Inducing points in subset of regressors appoximation treated as random variables (locations and values)
+\vspace{2\baselineskip}
+\item Gaussian process sampled using elliptical slice sampling; all other parameters sampled using slice sampling
+\end{itemize}
   \end{block}
+\end{frame}
+
+\begin{frame}{Appendix: proof sketch of corollary}
+\begin{proof}
+By Aldous--Hoover, there exists a random function $F'$ such that
+\[
+(R_{ij}) \eqdist (F'(\AHvar_i,\AHvar_j,\AHvar_{ij})), \nonumber
+\]
+and so we may write 
+\[
+(\darray_{ij}, \CovData_i) \eqdist 
+     (F_1'(\AHvar_i,\AHvar_j,\AHvar_{ij}), F_2'(\AHvar_i,\AHvar_j,\AHvar_{ij})) \nonumber
+\]
+for a pair of random functions $F'_1$ and $F'_2$ into $\dataspace$ and $\dataspace'$, respectively.
+It follows that, with probability one,
+$F_2'(\AHvar_i,\AHvar_j,\AHvar_{ij}) = F_2'(\AHvar_i,\AHvar_i,\AHvar_{ii})$ for all $i,j\in\Nats$
+and so, in particular we have 
+\[
+(\darray_{ij}, \CovData_i) \eqdist 
+       (F_1'(\AHvar_i,\AHvar_j,\AHvar_{ij}),F_2'(\AHvar_i,\AHvar_i,\AHvar_{ii})) \nonumber
+\]
+Let $\phi: [0,1]^2 \to [0,1]$ be a bimeasurable function such that
+$U_i^* = \phi(\AHvar_i,\AHvar_{ii})$ is uniformly distributed.
+Then we can write
+\[
+(\darray_{ij}, \CovData_i) \eqdist (F(\AHvar_i^*,\AHvar_j^*,\AHvar_{ij}), G(\AHvar_i^*)), \nonumber
+\]
+where $F$ and $G$ are given by $F(\phi(x,xx),\phi(y,yy),z) = F_1'(x,y,z)$ and $G(\phi(x,xx)) = F_2'(x,x,xx)$, completing the proof.
+\end{proof}
 \end{frame}
 
 \end{document}
